@@ -1,4 +1,4 @@
-﻿@model Employee
+﻿@model EmployeeViewModel
 @{
     ViewData["Title"] = "Edit";
 }
@@ -6,9 +6,11 @@
 <h1>Edit Employee</h1>
 <br />
 <br />
-<form asp-action="Edit">
+<form asp-action="Edit" enctype="multipart/form-data">
     <div asp-validation-summary="All" class="alert text-danger"></div>
     <partial name="PartialViews/EditCreateEmployeePartialView" model="Model" />
+
+    <input type="hidden" asp-for="ImageName" />
 
     <br />
     <input type="submit" value="Save" class="btn btn-primary" />

@@ -6,17 +6,19 @@ namespace Company.MVC.PL.Controllers
 {
     public class DepartmentsController : Controller
     {
-        private readonly IDepartmentRepository _departmentRepository; //NULL
+        //private readonly IDepartmentRepository _departmentRepository; //NULL
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DepartmentsController(IDepartmentRepository departmentRepository) //ASK CLR Create Object From DepartmentRepository
+        public DepartmentsController(/*IDepartmentRepository departmentRepository*/ IUnitOfWork unitOfWork) //ASK CLR Create Object From DepartmentRepository
         {
-            _departmentRepository = departmentRepository; 
+            //_departmentRepository = departmentRepository;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var departments = _departmentRepository.GetAll();
+            var departments = await _unitOfWork.DepartmentRepository.GetAllAsync();
             return View(departments);
         }
         [HttpGet]
@@ -25,11 +27,11 @@ namespace Company.MVC.PL.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Department model)
+        public async Task<IActionResult> Create(Department model)
         {
             if (ModelState.IsValid)   // Server Side Validation
             {
-                var Count = _departmentRepository.Add(model);
+                var Count = await _unitOfWork.DepartmentRepository.AddAsync(model);
                 if (Count > 0)
                 {
                     return RedirectToAction("Index");
@@ -38,33 +40,33 @@ namespace Company.MVC.PL.Controllers
             return View(model);
         }
 
-        public IActionResult Details(int? id, string viewName = "Details")
+        public async Task<IActionResult> Details(int? id, string viewName = "Details")
         {
             if (id is null) return BadRequest();    // 404
-            var department = _departmentRepository.Get(id.Value);
+            var department = await _unitOfWork.DepartmentRepository.GetAsync(id.Value);
             return View(viewName, department);
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             //if (id is null) return BadRequest();    // 404
             //var department = _departmentRepository.Get(id.Value);
             //return View(department);
 
-            return Details(id, "Edit");
+            return await Details(id, "Edit");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute]int? id, Department model) 
+        public async Task<IActionResult> Edit([FromRoute]int? id, Department model) 
         {
             try
             {
                 if (id != model.Id) return BadRequest();    // 404
                 if (ModelState.IsValid)   // Server Side Validation
                 {
-                    var Count = _departmentRepository.Update(model);
+                    var Count = await _unitOfWork.DepartmentRepository.Update(model);
                     if (Count > 0)
                     {
                         return RedirectToAction("Index");
@@ -79,24 +81,24 @@ namespace Company.MVC.PL.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             //if (id is null) return BadRequest();    // 404
             //var department = _departmentRepository.Get(id.Value);
             //return View(department);
 
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute] int? id, Department model)
+        public async Task<IActionResult> Delete([FromRoute] int? id, Department model)
         {
             try
             {
                 if (id != model.Id) return BadRequest();    // 404
                 if (ModelState.IsValid)   // Server Side Validation
                 {
-                    var Count = _departmentRepository.Delete(model);
+                    var Count = await _unitOfWork.DepartmentRepository.Delete(model);  
                     if (Count > 0)
                     {
                         return RedirectToAction("Index");

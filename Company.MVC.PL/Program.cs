@@ -1,6 +1,11 @@
+using Company.MVC.BLL;
 using Company.MVC.BLL.Interfaces;
 using Company.MVC.BLL.Repositories;
 using Company.MVC.DAL.Data.Contexts;
+using Company.MVC.DAL.Models;
+using Company.MVC.PL.Mapping.Employees;
+using Company.MVC.PL.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -20,10 +25,22 @@ namespace Company.MVC.PL
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));  // Use SQL Server
             }); // Extension Method: Allow DI For AppDbContext / Register the AppDbContext with the DI container
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();  // Allow DI For DepartmentRepository
-            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();  // Allow DI For EmployeeRepository 
+            //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();  // Allow DI For DepartmentRepository
+            //builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();  // Allow DI For EmployeeRepository 
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();  // Allow DI For UnitOfWork
+            builder.Services.AddAutoMapper(typeof(EmployeeProfile));  // Add AutoMapper for each profile to the DI container
+            //builder.Services.AddAutoMapper(typeof(Program).Assembly);  // Add AutoMapper of all profiles to the DI container
 
-            var app = builder.Build();
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
+			//builder.Services.AddScoped<IScopedService, ScopedService>();  
+			//builder.Services.AddTransient<ITransientService, TransientService>();
+			//builder.Services.AddSingleton<ISingletonService, SingletonService>();
+
+			//builder.Services.AddScoped<UserManager<ApplicationUser>>();
+
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
