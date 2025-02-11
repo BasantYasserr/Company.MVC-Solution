@@ -18,5 +18,7 @@ namespace Company.MVC.DAL.Models
 
         [DisplayName("Date Of Creation")]
         public DateTime DateOfCreation { get; set; } = DateTime.Now;
+
+        public ICollection<Employee>? Employees { get; set; }
     }
 }

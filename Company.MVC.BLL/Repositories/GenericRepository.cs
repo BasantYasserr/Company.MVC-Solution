@@ -1,6 +1,7 @@
 ﻿using Company.MVC.BLL.Interfaces;
 using Company.MVC.DAL.Data.Contexts;
 using Company.MVC.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,35 +12,43 @@ namespace Company.MVC.BLL.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
-        private readonly AppDbContext _context;
+        private protected readonly AppDbContext _context;
         public GenericRepository(AppDbContext context)  // ASK CLR To Create Object From AppDbContext - Dependency Injection.
         {
             _context = context;
         }
 
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return _context.Set<T>().ToList();
+            if (typeof(T) == typeof(Employee))
+            {
+                return (IEnumerable<T>) await _context.Employees.Include(E => E.WorkFor).ToListAsync();
+            }
+            return await _context.Set<T>().ToListAsync();
         }
-        public T Get(int id)
+        
+        public async Task<T> GetAsync(int id)
         {
-            return _context.Set<T>().Find(id);
+            return await _context.Set<T>().FindAsync(id);
         }
-        public int Add(T entity)
+        
+        public async Task<int> AddAsync(T entity)
         {
-            _context.Set<T>().Add(entity);
-            return _context.SaveChanges();
+            await _context.Set<T>().AddAsync(entity);
+            return await _context.SaveChangesAsync();
         }
-        public int Update(T entity)
+        
+        public async Task<int> Update(T entity)
         {
             _context.Set<T>().Update(entity);
-            return _context.SaveChanges();
+            return await _context.SaveChangesAsync();
         }
-        public int Delete(T entity)
+        
+        public async Task<int> Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            return _context.SaveChanges();
+            return await _context.SaveChangesAsync();
         }
     }
 }
