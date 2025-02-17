@@ -3,10 +3,12 @@ using Company.MVC.BLL.Interfaces;
 using Company.MVC.DAL.Models;
 using Company.MVC.PL.Helper;
 using Company.MVC.PL.ViewModels.Employees;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.MVC.PL.Controllers
 {
+    [Authorize]
     public class EmployeesController : Controller
     {
 

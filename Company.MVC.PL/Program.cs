@@ -32,7 +32,13 @@ namespace Company.MVC.PL
             //builder.Services.AddAutoMapper(typeof(Program).Assembly);  // Add AutoMapper of all profiles to the DI container
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>();
+                            .AddEntityFrameworkStores<AppDbContext>()
+                            .AddDefaultTokenProviders();
+
+            builder.Services.ConfigureApplicationCookie(config =>
+			{
+				config.LoginPath = "/Account/SignIn";
+			});
 
 			//builder.Services.AddScoped<IScopedService, ScopedService>();  
 			//builder.Services.AddTransient<ITransientService, TransientService>();
@@ -55,7 +61,8 @@ namespace Company.MVC.PL
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
+			app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
