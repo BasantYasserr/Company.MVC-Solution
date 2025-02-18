@@ -207,6 +207,12 @@ namespace Company.MVC.PL.Controllers
 			return View();
 		} 
 		#endregion
-	}
+
+
+		public IActionResult AccessDenied()
+        {
+            return View();
+        }
+    }
 }
 
