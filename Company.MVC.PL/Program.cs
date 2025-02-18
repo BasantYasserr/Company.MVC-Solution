@@ -38,7 +38,7 @@ namespace Company.MVC.PL
             builder.Services.ConfigureApplicationCookie(config =>
 			{
 				config.LoginPath = "/Account/SignIn";
-			});
+            });
 
 			//builder.Services.AddScoped<IScopedService, ScopedService>();  
 			//builder.Services.AddTransient<ITransientService, TransientService>();

@@ -3,6 +3,7 @@
 
 // Write your JavaScript code.
 
+
 let element = document.getElementById("id");
 
 element.addEventListener("keyup", () => {
