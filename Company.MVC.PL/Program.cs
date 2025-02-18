@@ -16,18 +16,21 @@ namespace Company.MVC.PL
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            
+            #region ConfigureServices
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();   // Adds the built-in services for MVC
-
-            //builder.Services.AddScoped<AppDbContext>();   // Allow DI For AppDbContext / Register the AppDbContext with the DI container
+           
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));  // Use SQL Server
-            }); // Extension Method: Allow DI For AppDbContext / Register the AppDbContext with the DI container
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")); // Use SQL Server
+            }); // Extension Method: Allow DI For AppDbContext/Register the AppDbContext with the DI container
+            
             //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();  // Allow DI For DepartmentRepository
             //builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();  // Allow DI For EmployeeRepository 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();  // Allow DI For UnitOfWork
+            
             builder.Services.AddAutoMapper(typeof(EmployeeProfile));  // Add AutoMapper for each profile to the DI container
             //builder.Services.AddAutoMapper(typeof(Program).Assembly);  // Add AutoMapper of all profiles to the DI container
 
@@ -36,18 +39,15 @@ namespace Company.MVC.PL
                             .AddDefaultTokenProviders();
 
             builder.Services.ConfigureApplicationCookie(config =>
-			{
-				config.LoginPath = "/Account/SignIn";
+            {
+                config.LoginPath = "/Account/SignIn";
             });
 
-			//builder.Services.AddScoped<IScopedService, ScopedService>();  
-			//builder.Services.AddTransient<ITransientService, TransientService>();
-			//builder.Services.AddSingleton<ISingletonService, SingletonService>();
+            #endregion
 
-			//builder.Services.AddScoped<UserManager<ApplicationUser>>();
+            var app = builder.Build();
 
-			var app = builder.Build();
-
+            #region Configure HTTP Request Pipeline Or Middlewares
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -62,13 +62,15 @@ namespace Company.MVC.PL
             app.UseRouting();
 
             app.UseAuthentication();
-			app.UseAuthorization();
+            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.Run();
+            #endregion
+
+            app.Run(); 
         }
     }
 }

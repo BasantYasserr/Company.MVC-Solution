@@ -11,20 +11,12 @@ namespace Company.MVC.PL.Controllers
     [Authorize]
     public class EmployeesController : Controller
     {
-
-        //private readonly IEmployeeRepository _employeeRepository;
-        //private readonly IDepartmentRepository _departmentRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public EmployeesController(
-                                    //IEmployeeRepository employeeRepository,
-                                    //IDepartmentRepository departmentRepository,
-                                    IUnitOfWork unitOfWork,
+        public EmployeesController(IUnitOfWork unitOfWork,
                                     IMapper mapper)
         {
-            //_employeeRepository = employeeRepository;
-            //_departmentRepository = departmentRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -67,25 +59,7 @@ namespace Company.MVC.PL.Controllers
                     model.ImageName = DocumentSettings.Upload(model.Image, "images");
                 }
 
-                //Casting  EmployeeViewModel (ViewModel) --> Employee (Model)
-                //Mapping :- 
-                //1. Manual Mapping
-                //Employee employee = new Employee()
-                //{
-                //    Id = model.Id,
-                //    Name = model.Name,
-                //    Address = model.Address,
-                //    Age = model.Age,
-                //    Email = model.Email,
-                //    HiringDate = model.HiringDate,
-                //    IsActive = model.IsActive,
-                //    PhoneNumber = model.PhoneNumber,
-                //    Salary = model.Salary,
-                //    WorkForId = model.WorkForId,
-                //    WorkFor = model.WorkFor
-                //};
-
-                //2. Auto Maping
+                //Auto Maping :  Casting  EmployeeViewModel (ViewModel) --> Employee (Model)
                 var employee = _mapper.Map<Employee>(model);
 
                 var Count = await _unitOfWork.EmployeeRepository.AddAsync(employee);
@@ -103,23 +77,8 @@ namespace Company.MVC.PL.Controllers
             var employee = await _unitOfWork.EmployeeRepository.GetAsync(id.Value);
             if (employee is null) return NotFound();
 
-            //Manual Mapping :  Employee(Model) --> EmployeeViewModel(ViewModel)
-            //EmployeeViewModel employeeViewModel = new EmployeeViewModel()
-            //{
-            //    Id = employee.Id,
-            //    Name = employee.Name,
-            //    Address = employee.Address,
-            //    Age = employee.Age,
-            //    Email = employee.Email,
-            //    HiringDate = employee.HiringDate,
-            //    IsActive = employee.IsActive,
-            //    PhoneNumber = employee.PhoneNumber,
-            //    Salary = employee.Salary,
-            //    WorkForId = employee.WorkForId,
-            //    WorkFor = employee.WorkFor
-            //};
 
-            //2. Auto Maping
+            //Auto Maping :   Employee(Model) --> EmployeeViewModel(ViewModel)
             var employeeViewModel = _mapper.Map<EmployeeViewModel>(employee);
             return View(viewName, employeeViewModel);
         }
@@ -153,23 +112,8 @@ namespace Company.MVC.PL.Controllers
                         model.ImageName = DocumentSettings.Upload(model.Image, "images");
                     }
 
-                    //Mapping :  EmployeeViewModel(ViewModel) -->  Employee(Model)
-                    //Employee employee = new Employee()
-                    //{
-                    //    Id = model.Id,
-                    //    Name = model.Name,
-                    //    Address = model.Address,
-                    //    Age = model.Age,
-                    //    Email = model.Email,
-                    //    HiringDate = model.HiringDate,
-                    //    IsActive = model.IsActive,
-                    //    PhoneNumber = model.PhoneNumber,
-                    //    Salary = model.Salary,
-                    //    WorkForId = model.WorkForId,
-                    //    WorkFor = model.WorkFor
-                    //};
 
-                    //2. Auto Maping
+                    //Auto Maping :  EmployeeViewModel(ViewModel) -->  Employee(Model)
                     var employee = _mapper.Map<Employee>(model);
 
                     var Count = await _unitOfWork.EmployeeRepository.Update(employee);
@@ -201,23 +145,8 @@ namespace Company.MVC.PL.Controllers
             {
                 if (id != model.Id) return BadRequest();
 
-                //Mapping :  EmployeeViewModel(ViewModel) -->  Employee(Model)
-                //Employee employee = new Employee()
-                //{
-                //    Id = model.Id,
-                //    Name = model.Name,
-                //    Address = model.Address,
-                //    Age = model.Age,
-                //    Email = model.Email,
-                //    HiringDate = model.HiringDate,
-                //    IsActive = model.IsActive,
-                //    PhoneNumber = model.PhoneNumber,
-                //    Salary = model.Salary,
-                //    WorkForId = model.WorkForId,
-                //    WorkFor = model.WorkFor
-                //};
 
-                //2. Auto Maping
+                //Auto Maping :   EmployeeViewModel(ViewModel) -->  Employee(Model)
                 var employee = _mapper.Map<Employee>(model);
 
                 var Count = await _unitOfWork.EmployeeRepository.Delete(employee);

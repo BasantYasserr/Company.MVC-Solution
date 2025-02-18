@@ -208,7 +208,6 @@ namespace Company.MVC.PL.Controllers
 		} 
 		#endregion
 
-
 		public IActionResult AccessDenied()
         {
             return View();

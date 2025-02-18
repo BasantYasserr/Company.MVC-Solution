@@ -6,9 +6,6 @@
         public static string Upload(IFormFile file, string folderName)
         {
             //1. Get Location Of Folder
-
-            //string folderPath = $"C:\Users\asus\Documents\Route Projects FullStack\Back-endAssignments\ASP.NET Core MVC\Company.MVC Solution\Company.MVC.PL\wwwroot\files\{folderName}";
-            //string folderPath = Dictionary.Enumerator.CurrentDirectory + "\\wwwroot\\files\\" + folderName;
             string folderPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\files\\{folderName}");
 
 
