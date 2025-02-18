@@ -16,7 +16,6 @@ namespace Company.MVC.PL.Controllers
 
 		//Get, GetAll, Add, Update, Delete
 		//Index, Details, Edit, Delete
-
 		public UserController(UserManager<ApplicationUser> userManager)
         {
 			_userManager = userManager;

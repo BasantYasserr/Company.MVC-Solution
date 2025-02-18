@@ -8,12 +8,10 @@ namespace Company.MVC.PL.Controllers
     [Authorize]
     public class DepartmentsController : Controller
     {
-        //private readonly IDepartmentRepository _departmentRepository; //NULL
         private readonly IUnitOfWork _unitOfWork;
 
-        public DepartmentsController(/*IDepartmentRepository departmentRepository*/ IUnitOfWork unitOfWork) //ASK CLR Create Object From DepartmentRepository
+        public DepartmentsController(IUnitOfWork unitOfWork) //ASK CLR Create Object From DepartmentRepository
         {
-            //_departmentRepository = departmentRepository;
             _unitOfWork = unitOfWork;
         }
 
@@ -52,10 +50,6 @@ namespace Company.MVC.PL.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            //if (id is null) return BadRequest();    // 404
-            //var department = _departmentRepository.Get(id.Value);
-            //return View(department);
-
             return await Details(id, "Edit");
         }
 
@@ -85,10 +79,6 @@ namespace Company.MVC.PL.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
-            //if (id is null) return BadRequest();    // 404
-            //var department = _departmentRepository.Get(id.Value);
-            //return View(department);
-
             return await Details(id, "Delete");
         }
         [HttpPost]
