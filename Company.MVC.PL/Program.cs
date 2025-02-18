@@ -15,6 +15,7 @@ namespace Company.MVC.PL
     {
         public static void Main(string[] args)
         {
+
             var builder = WebApplication.CreateBuilder(args);
             
             #region ConfigureServices
@@ -71,6 +72,7 @@ namespace Company.MVC.PL
             #endregion
 
             app.Run(); 
+        
         }
     }
 }
